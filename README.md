@@ -8,6 +8,7 @@ Google Sheet **ไฟล์ใหม่แยกต่างหาก** — ไ�
 - โค้ด: [`src/Code.gs`](src/Code.gs) และ [`src/appsscript.json`](src/appsscript.json)
 - ฟอร์มแจ้งงานสำหรับลูกน้อง (ต่อท้ายแท็บ "งาน" อัตโนมัติ): [FORM-SETUP.md](FORM-SETUP.md)
   + [`src/form-bridge/`](src/form-bridge/)
+- แอปมือถือแจ้งงาน+ปิดงานด้วย AppSheet (no-code): [APPSHEET-SETUP.md](APPSHEET-SETUP.md)
 
 ## สิ่งที่ได้
 
