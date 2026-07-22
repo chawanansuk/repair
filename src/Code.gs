@@ -34,9 +34,20 @@ var CONFIG = {
   },
 
   DONE_STATUSES: ['เสร็จ', 'done', 'ปิดแล้ว'],   // เทียบแบบ trim + lowercase
+  CANCEL_STATUSES: ['ยกเลิก', 'cancelled'],
   KNOWN_TYPES: ['ซ่อม', 'ทำสะอาด', 'ชมห้อง', 'ย้ายเข้า', 'ย้ายออก'],
   OTHER_TYPE: 'อื่นๆ',
   COMMON_AREA: 'ส่วนกลาง',
+
+  // ===== ส่วนต่อยอด (เว้นว่าง/ตั้ง 0 เพื่อปิดฟีเจอร์นั้น) =====
+  // อีเมลผู้รับรายงานและแจ้งเตือน คั่นหลายคนด้วย , — เว้นว่าง = ปิดการส่งอีเมลทั้งหมด
+  REPORT_RECIPIENTS: '',
+  // ส่ง PDF รายงานของ "เดือนก่อนหน้า" อัตโนมัติทุกวันที่ 1 เวลา 6 โมงเช้า
+  SEND_MONTHLY_PDF: true,
+  // แจ้งเตือนงานที่ยังไม่เสร็จและค้างเกินกี่วัน (0 = ปิด, ส่งไม่เกินวันละครั้ง)
+  AGING_ALERT_DAYS: 3,
+
+  QUALITY_SHEET: 'ตรวจข้อมูล',
 
   // ตำแหน่งเซลล์ควบคุมบนแท็บรายงานรายเดือน (แถว 2)
   MONTH_CELL: 'B2',   // dropdown เดือน
@@ -70,6 +81,7 @@ function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('รายงานซ่อมบำรุง')
     .addItem('🔄 รีเฟรชรายงาน', 'menuRefresh')
+    .addItem('📄 ส่ง PDF เดือนก่อนหน้าทางอีเมล', 'menuSendPdf')
     .addSeparator()
     .addItem('⚙️ ตั้งค่าครั้งแรก (สร้างแท็บ + trigger)', 'setup')
     .addToUi();
@@ -81,7 +93,7 @@ function setup() {
   ensureMonthlySheet_(ss);
   ensureYearlySheet_(ss);
   ensureCacheSheet_(ss);
-  installDailyTrigger_();
+  installTriggers_();
   refreshReport();
 }
 
@@ -92,6 +104,22 @@ function menuRefresh() {
     SpreadsheetApp.getActive().toast('ดึงข้อมูลล่าสุดเรียบร้อย', 'รีเฟรชรายงาน', 5);
   } catch (err) {
     SpreadsheetApp.getUi().alert('รีเฟรชไม่สำเร็จ: ' + err.message);
+  }
+}
+
+/** เรียกจากเมนู — ส่ง PDF เดือนก่อนหน้าทันทีโดยไม่ต้องรอวันที่ 1 */
+function menuSendPdf() {
+  if (!CONFIG.REPORT_RECIPIENTS) {
+    SpreadsheetApp.getUi().alert(
+      'ยังไม่ได้ตั้งอีเมลผู้รับ — ใส่ที่ REPORT_RECIPIENTS ใน Code.gs ก่อน');
+    return;
+  }
+  try {
+    sendMonthlyPdf();
+    SpreadsheetApp.getActive().toast(
+      'ส่ง PDF ไปที่ ' + CONFIG.REPORT_RECIPIENTS + ' แล้ว', 'ส่งรายงาน', 5);
+  } catch (err) {
+    SpreadsheetApp.getUi().alert('ส่ง PDF ไม่สำเร็จ: ' + err.message);
   }
 }
 
@@ -107,12 +135,14 @@ function refreshReport() {
     ensureMonthlySheet_(ss);
     ensureYearlySheet_(ss);
 
-    var rows = readSourceRows_();          // << จุดเดียวที่แตะชีตต้นทาง (อ่านอย่างเดียว)
-    writeCache_(ss, rows);
-    updateYearDropdowns_(ss, rows);
+    var data = readSourceRows_();          // << จุดเดียวที่แตะชีตต้นทาง (อ่านอย่างเดียว)
+    writeCache_(ss, data.done);
+    updateYearDropdowns_(ss, data.done);
+    renderQuality_(ss, data.issues);
     renderMonthly_(ss);
     renderYearly_(ss);
     stampRefreshTime_(ss);
+    maybeSendAgingDigest_(data.pending);
   } finally {
     lock.releaseLock();
   }
@@ -146,7 +176,10 @@ function rangeCovers_(range, row, col) {
 // =================================================================
 
 /**
- * อ่านแท็บ "งาน" ของชีตต้นทาง แล้วคืนเฉพาะงานสถานะ "เสร็จ" ที่ parse วันที่ได้
+ * อ่านแท็บ "งาน" ของชีตต้นทางรอบเดียว แล้วแยกเป็น 3 กอง:
+ *   done    — งานสถานะ "เสร็จ" ที่ parse วันที่ได้ (ใช้ทำรายงาน)
+ *   pending — งานที่ยังไม่เสร็จและไม่ถูกยกเลิก (ใช้แจ้งเตือนงานค้าง)
+ *   issues  — แถวที่ข้อมูลมีปัญหา (ใช้แสดงในแท็บ "ตรวจข้อมูล" ให้ไปแก้ที่ต้นทางเอง)
  * ห้ามเรียก method เขียนใดๆ กับ src/sheet ในฟังก์ชันนี้เด็ดขาด
  */
 function readSourceRows_() {
@@ -159,28 +192,49 @@ function readSourceRows_() {
     throw new Error('ไม่พบแท็บ "' + CONFIG.SOURCE_SHEET_NAME + '" ในชีตต้นทาง');
   }
   var values = sheet.getDataRange().getValues();
-  if (values.length < 2) return [];
+  var result = { done: [], pending: [], issues: [] };
+  if (values.length < 2) return result;
 
   var col = buildHeaderMap_(values[0]);
-  var out = [];
   for (var i = 1; i < values.length; i++) {
     var row = values[i];
-    var status = String(row[col.status] || '').trim().toLowerCase();
-    if (CONFIG.DONE_STATUSES.indexOf(status) === -1) continue; // เอาเฉพาะงานเสร็จ (ยกเลิก/อื่นๆ ตกไปเอง)
+    if (row.every(function (c) { return String(c).trim() === ''; })) continue; // แถวว่างจริง
 
+    var statusRaw = String(row[col.status] || '').trim();
+    var status = statusRaw.toLowerCase();
+    var isDone = CONFIG.DONE_STATUSES.indexOf(status) !== -1;
+    var isCancelled = CONFIG.CANCEL_STATUSES.indexOf(status) !== -1;
     var d = parseJobDate_(row[col.date]);
-    if (!d) continue; // วันที่อ่านไม่ได้ → ข้าม (กันข้อมูลผีเข้ารายงานผิดเดือน)
 
-    out.push({
+    var job = {
+      sourceRow: i + 1, // เลขแถวจริงในชีตต้นทาง
       date: d,
+      dateRaw: row[col.date],
       type: sanitizeText_(String(row[col.type] || '').trim()) || CONFIG.OTHER_TYPE,
       building: sanitizeText_(String(row[col.building] || '').trim()),
       room: sanitizeText_(String(row[col.room] || '').trim()),
       note: sanitizeText_(String(row[col.note] || '').trim()),
-      cost: parseCost_(row[col.cost])
-    });
+      status: statusRaw,
+      cost: parseCost_(row[col.cost]),
+      costRaw: row[col.cost]
+    };
+
+    // ตรวจสุขภาพข้อมูล — ชี้จุดให้ไปแก้ที่ชีตต้นทาง (เราไม่แก้ให้)
+    var problems = [];
+    if (!d) problems.push('วันที่อ่านไม่ได้');
+    if (!job.room) problems.push('ช่องห้องว่าง');
+    if (isDone && String(job.costRaw).trim() === '') {
+      problems.push('งานเสร็จแต่ค่าใช้จ่ายว่าง (ถ้าฟรีจริงใส่ 0 เพื่อยืนยัน)');
+    }
+    if (problems.length) {
+      result.issues.push({ job: job, problems: problems });
+    }
+
+    if (!d) continue; // วันที่อ่านไม่ได้ → เข้ารายงานไม่ได้ (โผล่ในแท็บตรวจข้อมูลแทน)
+    if (isDone) result.done.push(job);
+    else if (!isCancelled) result.pending.push(job);
   }
-  return out;
+  return result;
 }
 
 /** map ชื่อหัวตาราง → index คอลัมน์ พร้อมตรวจว่าหัวที่ต้องใช้ครบ */
@@ -568,16 +622,175 @@ function stampRefreshTime_(ss) {
   if (yearly) yearly.getRange(CONFIG.YEARLY_STAMP_CELL).setValue(text);
 }
 
-/** trigger รายวันตี 5 (โซนเวลาตาม appsscript.json = Asia/Bangkok) — idempotent */
-function installDailyTrigger_() {
+/**
+ * trigger ทั้งหมดของระบบ (โซนเวลาตาม appsscript.json = Asia/Bangkok) — idempotent
+ *   refreshReport  ทุกวันตี 5
+ *   sendMonthlyPdf ทุกวันที่ 1 ของเดือน 6 โมงเช้า (ทำงานจริงเมื่อตั้ง REPORT_RECIPIENTS)
+ */
+function installTriggers_() {
   ScriptApp.getProjectTriggers().forEach(function (t) {
-    if (t.getHandlerFunction() === 'refreshReport') ScriptApp.deleteTrigger(t);
+    var h = t.getHandlerFunction();
+    if (h === 'refreshReport' || h === 'sendMonthlyPdf') ScriptApp.deleteTrigger(t);
   });
   ScriptApp.newTrigger('refreshReport')
     .timeBased()
     .everyDays(1)
     .atHour(5)
     .create();
+  ScriptApp.newTrigger('sendMonthlyPdf')
+    .timeBased()
+    .onMonthDay(1)
+    .atHour(6)
+    .create();
+}
+
+// =================================================================
+// ส่วนต่อยอด 1: แท็บ "ตรวจข้อมูล" — ชี้แถวที่มีปัญหาในชีตต้นทาง
+// (อ่านอย่างเดียวเหมือนเดิม — เราแค่รายงานตำแหน่ง ให้ไปแก้ที่ชีตหอพักเอง)
+// =================================================================
+
+function renderQuality_(ss, issues) {
+  var sh = ss.getSheetByName(CONFIG.QUALITY_SHEET);
+  if (!sh) {
+    sh = ss.insertSheet(CONFIG.QUALITY_SHEET, 2);
+    sh.setHiddenGridlines(true);
+    var widths = [90, 260, 100, 100, 70, 80, 220];
+    widths.forEach(function (w, i) { sh.setColumnWidth(i + 1, w); });
+    sh.getRange('A1:G1').merge()
+      .setValue('ตรวจสุขภาพข้อมูลชีตต้นทาง (แก้ไขที่ชีตหอพัก แล้วกดรีเฟรชใหม่)')
+      .setFontSize(12).setFontWeight('bold').setFontColor(COLOR.TITLE);
+    sh.setFrozenRows(2);
+  }
+
+  var clearRange = sh.getRange(2, 1, Math.max(sh.getMaxRows() - 1, 1), Math.max(sh.getMaxColumns(), 7));
+  clearRange.breakApart();
+  clearRange.clear();
+
+  if (!issues.length) {
+    writeNotice_(sh, 3, 7, 'ไม่พบปัญหาในข้อมูล 🎉');
+    return;
+  }
+
+  sh.getRange(2, 1, 1, 7)
+    .setValues([['แถวในชีตต้นทาง', 'ปัญหา', 'วันที่ (ตามต้นทาง)', 'สถานะ', 'ตึก', 'ห้อง', 'หมายเหตุ']])
+    .setFontWeight('bold').setBackground(COLOR.HEADER_BG);
+  var body = issues.map(function (it) {
+    return [
+      it.job.sourceRow,
+      it.problems.join(' / '),
+      rawDateText_(it.job.dateRaw),
+      it.job.status,
+      it.job.building,
+      it.job.room,
+      it.job.note
+    ];
+  });
+  sh.getRange(3, 1, body.length, 7).setValues(body);
+  sh.getRange(3, 1, body.length, 1).setHorizontalAlignment('center');
+  sh.getRange(2, 1, body.length + 1, 7).setBorder(true, true, true, true, true, true);
+}
+
+/** แสดงค่าดิบของช่องวันที่ให้อ่านรู้เรื่อง ไม่ว่าจะเป็น Date หรือข้อความ */
+function rawDateText_(v) {
+  if (v instanceof Date && !isNaN(v.getTime())) {
+    return Utilities.formatDate(v, CONFIG.TZ, 'dd/MM/yyyy');
+  }
+  return sanitizeText_(String(v == null ? '' : v).trim());
+}
+
+// =================================================================
+// ส่วนต่อยอด 2: แจ้งเตือนงานค้างนานทางอีเมล (ส่งไม่เกินวันละครั้ง)
+// =================================================================
+
+function maybeSendAgingDigest_(pending) {
+  if (!CONFIG.REPORT_RECIPIENTS || CONFIG.AGING_ALERT_DAYS <= 0) return;
+
+  var todayKey = Utilities.formatDate(new Date(), CONFIG.TZ, 'yyyy-MM-dd');
+  var props = PropertiesService.getScriptProperties();
+  if (props.getProperty('lastAgingDigest') === todayKey) return;
+
+  var now = new Date();
+  var overdue = pending
+    .map(function (p) {
+      return { job: p, age: Math.floor((now - p.date) / 86400000) };
+    })
+    .filter(function (x) { return x.age >= CONFIG.AGING_ALERT_DAYS; })
+    .sort(function (a, b) { return b.age - a.age; });
+  if (!overdue.length) return;
+
+  var lines = overdue.map(function (x) {
+    var where = x.job.room === CONFIG.COMMON_AREA
+      ? 'ส่วนกลาง'
+      : 'ตึก ' + x.job.building + ' ห้อง ' + x.job.room;
+    return '• ' + where + ' — ' + x.job.type +
+      (x.job.note ? ' ' + x.job.note : '') +
+      ' (ค้าง ' + x.age + ' วัน, แจ้งเมื่อ ' +
+      Utilities.formatDate(x.job.date, CONFIG.TZ, 'dd/MM/yyyy') +
+      (x.job.status ? ', สถานะ: ' + x.job.status : '') + ')';
+  });
+  MailApp.sendEmail({
+    to: CONFIG.REPORT_RECIPIENTS,
+    subject: '⚠️ งานซ่อมบำรุงค้างเกิน ' + CONFIG.AGING_ALERT_DAYS +
+      ' วัน (' + overdue.length + ' รายการ)',
+    body: 'งานที่ยังไม่เสร็จและค้างนานเกินกำหนด:\n\n' + lines.join('\n') +
+      '\n\n— อีเมลอัตโนมัติจากระบบรายงานซ่อมบำรุง (ส่งไม่เกินวันละครั้ง)'
+  });
+  props.setProperty('lastAgingDigest', todayKey);
+}
+
+// =================================================================
+// ส่วนต่อยอด 3: ส่ง PDF รายงานเดือนก่อนหน้าทางอีเมล (วันที่ 1 ของทุกเดือน)
+// =================================================================
+
+function sendMonthlyPdf() {
+  if (!CONFIG.SEND_MONTHLY_PDF || !CONFIG.REPORT_RECIPIENTS) return;
+  var ss = SpreadsheetApp.getActive();
+  var sh = ss.getSheetByName(CONFIG.MONTHLY_SHEET);
+  if (!sh) return;
+
+  // เดือนก่อนหน้า (ข้ามปีได้: มกราคม → ธันวาคมปีที่แล้ว)
+  var parts = currentDateParts_();
+  var m = parts.month - 1;
+  var y = parts.year;
+  if (m < 0) { m = 11; y -= 1; }
+
+  // จำค่า dropdown เดิมไว้ แล้วสลับไปเดือนก่อนหน้าเพื่อสร้าง PDF
+  var keepMonth = sh.getRange(CONFIG.MONTH_CELL).getValue();
+  var keepYear = sh.getRange(CONFIG.YEAR_CELL).getValue();
+  sh.getRange(CONFIG.MONTH_CELL).setValue(THAI_MONTHS[m]);
+  sh.getRange(CONFIG.YEAR_CELL).setValue(String(y));
+
+  try {
+    refreshReport(); // ดึงข้อมูลล่าสุด + render ตามเดือนที่ตั้งไว้
+    SpreadsheetApp.flush();
+    var blob = exportSheetPdf_(ss, sh)
+      .setName('รายงานซ่อมบำรุง-' + THAI_MONTHS[m] + '-' + y + '.pdf');
+    MailApp.sendEmail({
+      to: CONFIG.REPORT_RECIPIENTS,
+      subject: 'รายงานงานซ่อมบำรุง ประจำเดือน' + THAI_MONTHS[m] + ' ' + y,
+      body: 'รายงานประจำเดือน' + THAI_MONTHS[m] + ' ' + y + ' แนบมากับอีเมลนี้\n\n' +
+        '— อีเมลอัตโนมัติจากระบบรายงานซ่อมบำรุง (ส่งทุกวันที่ 1 ของเดือน)',
+      attachments: [blob]
+    });
+  } finally {
+    // คืนค่า dropdown ที่ผู้ใช้เลือกไว้เดิม
+    sh.getRange(CONFIG.MONTH_CELL).setValue(keepMonth);
+    sh.getRange(CONFIG.YEAR_CELL).setValue(keepYear);
+    renderMonthly_(ss);
+  }
+}
+
+/** export แท็บที่ระบุเป็น PDF แนวตั้ง A4 (ใช้สิทธิ์ของเจ้าของสคริปต์เอง) */
+function exportSheetPdf_(ss, sheet) {
+  var url = 'https://docs.google.com/spreadsheets/d/' + ss.getId() + '/export' +
+    '?format=pdf&gid=' + sheet.getSheetId() +
+    '&size=A4&portrait=true&fitw=true' +
+    '&gridlines=false&sheetnames=false&printtitle=false&pagenumbers=true' +
+    '&top_margin=0.50&bottom_margin=0.50&left_margin=0.50&right_margin=0.50';
+  var res = UrlFetchApp.fetch(url, {
+    headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() }
+  });
+  return res.getBlob();
 }
 
 function currentDateParts_() {
