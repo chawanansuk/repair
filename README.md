@@ -4,7 +4,10 @@
 Google Sheet **ไฟล์ใหม่แยกต่างหาก** — ไม่แตะข้อมูลหรือสคริปต์ของชีตต้นทางเลย
 
 - แผนงาน/สถาปัตยกรรม: [PLAN.md](PLAN.md)
+  (ทางเลือกแบบสูตรล้วนไม่ใช้สคริปต์: [PLAN-SIMPLE.md](PLAN-SIMPLE.md))
 - โค้ด: [`src/Code.gs`](src/Code.gs) และ [`src/appsscript.json`](src/appsscript.json)
+- ฟอร์มแจ้งงานสำหรับลูกน้อง (ต่อท้ายแท็บ "งาน" อัตโนมัติ): [FORM-SETUP.md](FORM-SETUP.md)
+  + [`src/form-bridge/`](src/form-bridge/)
 
 ## สิ่งที่ได้
 
