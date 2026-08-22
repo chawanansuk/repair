@@ -1,0 +1,37 @@
+{
+  "_readme": "แหล่งที่มาทั้งหมดของฐานข้อมูล พร้อมระดับความเชื่อมั่น เก็บข้อมูลเมื่อ 2026-08-22 ผ่าน WebSearch เท่านั้น (~200 queries) — การเข้าเว็บโดยตรงทุกช่องทางถูกบล็อกโดย network policy ของ environment",
+  "collection_method": {
+    "date": "2026-08-22",
+    "tool": "WebSearch (search engine index + snippets)",
+    "queries_used": "~200 queries ครอบคลุม 8 มุม: identity, fb-posts, recent window, website, platforms, teachings, community, english",
+    "blocked_methods": ["เข้า facebook.com โดยตรง (ทุก subdomain)", "hbfullfunnel.com", "Wayback Machine / archive.org", "Google cache", "r.jina.ai", "WebFetch ทุกโดเมน"]
+  },
+  "primary_sources": [
+    {"url": "https://www.facebook.com/hbfullfunnel/", "type": "เพจ Facebook เป้าหมาย", "confidence": "high", "what": "ชื่อเพจ, คำอธิบาย, ยอดไลก์ 23,078 / talking 2,988, URL โพสต์ ~28 โพสต์พร้อมข้อความเปิดโพสต์จาก URL slug"},
+    {"url": "https://hbfullfunnel.com/ และ https://www.hbfullfunnel.com/l/products, /courses", "type": "เว็บทางการ", "confidence": "high", "what": "บริษัท เทรนบิทซ์เวล จำกัด, LINE OA @bankfullfunnel, คอร์ส 'ปั้นธุรกิจเงินล้านด้วย AI ฉบับจับมือทำ', ราคา ฿8,900"},
+    {"url": "https://mocsc.moc.go.th/th/content/category/detail/id/3623/iid/100910", "type": "เว็บราชการ (กระทรวงพาณิชย์/DBD)", "confidence": "high", "what": "ยืนยันชื่อจริงเจ้าของเพจ: อ.วงศกร ธนูถนัด, สัมมนา 'สูตรลับ Tiktok ทำเงินล้านด้วย AI' 28 เม.ย. 2568"},
+    {"url": "https://khonkaen.boi.go.th/index.php/news/detail/2878", "type": "เว็บราชการ (BOI ขอนแก่น)", "confidence": "medium-high", "what": "ยืนยันตัวตนเจ้าของเพจ + งาน workshop Short Video (ผ่าน search summary)"},
+    {"url": "https://lineforbusiness.com/th/news/20230602_1", "type": "LINE ทางการ", "confidence": "high", "what": "โค้ชแบงค์ = LINE Certified Coach 2023 กลุ่ม LINE SHOPPING (1 ใน 36 โค้ช)"},
+    {"url": "https://www.mcot.net/view/TS0HQt8x และ https://www.ryt9.com/s/prg/3442107", "type": "สื่อ/ข่าวประชาสัมพันธ์", "confidence": "medium-high", "what": "วิทยากรโครงการ อสมท 'กลยุทธ์ออนไลน์ ฝ่าวิกฤติ พิชิตเงินล้าน' (ข่าว 11 ก.ค. 2568)"},
+    {"url": "https://www.youtube.com/watch?v=vHYeWaz1Q5c (และตอนอื่นๆ)", "type": "YouTube FM 96.5", "confidence": "medium-high", "what": "แขกรับเชิญประจำรายการ Thinking Connect FM 96.5 (มี.ค. 2567 – ก.ย. 2568)"},
+    {"url": "https://www.tiktok.com/@bankfullfunnel", "type": "TikTok ทางการของแบรนด์", "confidence": "high", "what": "bio, ชื่อคลิป ~15 รายการ, hashtag ประจำ"},
+    {"url": "https://www.lemon8-app.com/@bankfullfunnel", "type": "Lemon8 ทางการของแบรนด์", "confidence": "high", "what": "โพสต์ ~48 รายการ (แพลตฟอร์มที่ search index เก็บมากที่สุด), ผู้ติดตาม ~8.5K→11.9K"},
+    {"url": "https://www.youtube.com/channel/UCYYdtJwLRdpSmGWfm9ynadg", "type": "YouTube ทางการของแบรนด์", "confidence": "high", "what": "ช่องทางการ, วิดีโอคลาสเรียน, วิดีโอยุค 2023"},
+    {"url": "https://www.instagram.com/p/DDgK9vrBXu1/", "type": "Instagram", "confidence": "medium", "what": "โพสต์ 'AI คือเครื่องมือ...' ยืนยันว่ามีบัญชี IG"},
+    {"url": "https://www.thaipr.net/life/3404763", "type": "ข่าวประชาสัมพันธ์", "confidence": "medium", "what": "งาน FM 96.5 'สูตรลับสร้างยอดขายด้วยไลฟ์ และ Short VDO' ภาคตะวันออก"},
+    {"url": "https://www.bu.ac.th/th/busem/featured-stories/1575", "type": "มหาวิทยาลัยกรุงเทพ", "confidence": "medium", "what": "วิทยากร workshop BUSEM, เครดิต LINE Certified Coach 2023-2024"}
+  ],
+  "confidence_legend": {
+    "high": "ข้อความ/ตัวเลขปรากฏ verbatim ใน snippet หลายแหล่งตรงกัน",
+    "medium-high": "มาจาก AI summary ของ search engine แต่สอดคล้องกันหลาย query อิสระ",
+    "medium": "ปรากฏใน snippet เดียวหรือ summary เดียว",
+    "low": "ระบุไว้ใน unverified_claims ของ topics.json"
+  },
+  "negative_findings": [
+    "ไม่พบโพสต์ Facebook ที่ 'ยืนยันวันที่ได้' ในช่วง 22 พ.ค. – 22 ส.ค. 2026 (search engine ไม่ index วันที่โพสต์ของ Facebook)",
+    "ไม่พบคอมเมนต์ของเจ้าของเพจใต้โพสต์ใดๆ — Facebook ไม่เปิด comment ให้ search engine index",
+    "ไม่พบข้อมูลจดทะเบียนบริษัท เทรนบิทซ์เวล จำกัด ใน DBD/dataforthai index",
+    "ไม่พบรีวิว/กระทู้ Pantip/เสียงบ่น/testimonial จากบุคคลที่สามเลย (ทั้งแง่บวกและลบ)",
+    "ไม่พบวันสร้างเพจ, ประวัติส่วนตัวเชิงลึก (อายุ การศึกษา อาชีพก่อนหน้า) ของเจ้าของเพจ"
+  ]
+}

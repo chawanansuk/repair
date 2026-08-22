@@ -1,0 +1,78 @@
+{
+  "page": {
+    "name": "หัวหน้าแบงค์ FullFunnel",
+    "facebook_url": "https://www.facebook.com/hbfullfunnel",
+    "description_verbatim": "ทำธุรกิจผ่านออนไลน์ไม่ใช่เรื่องยาก จับมือทำไปกับ หัวหน้าแบงค์ FullFunnel",
+    "likes": 23078,
+    "talking_about": 2988,
+    "stats_as_of": "2026-08-22 (จาก search snippet หลายแหล่งตรงกัน)",
+    "created_date": null,
+    "created_date_note": "ไม่พบข้อมูลวันสร้างเพจจากการค้นหา",
+    "sections": ["Posts", "About", "Reels", "Photos", "Videos"],
+    "positioning": "สอนทำธุรกิจออนไลน์ กลยุทธ์แบรนด์ การตลาด การสร้างคอนเทนต์ การใช้ AI เพื่อธุรกิจ และเทคนิคโฆษณาบน Reels, Google Ads, Facebook, LINE, YouTube, TikTok, Instagram, Website แบบ Full Funnel"
+  },
+  "owner": {
+    "name": "วงศกร ธนูถนัด",
+    "name_romanized": "Wongsakorn Thanuthanad (สะกดอังกฤษไม่แน่นอน; BOI ใช้ Wongsakorn Thanutanod)",
+    "aliases": ["หัวหน้าแบงค์", "โค้ชแบงค์", "โค้ชหัวหน้าแบงค์", "อ.วงศกร ธนูถนัด"],
+    "name_confidence": "สูง — ยืนยันจากเพจสัมมนากระทรวงพาณิชย์ (mocsc.moc.go.th), BOI ขอนแก่น, RYT9 และ search summary อีก 3 แหล่งอิสระ",
+    "credentials": [
+      "LINE Certified Coach 2023 (กลุ่ม LINE SHOPPING — 1 ใน 36 โค้ชรุ่นปี 2023)",
+      "LINE Certified Coach 2023-2024 (ตามข้อมูลจากงาน BUSEM ม.กรุงเทพ)",
+      "วิทยากรสัมมนาออนไลน์ DBD (กรมพัฒนาธุรกิจการค้า) ครั้งที่ 2/2568 หลักสูตร 'สูตรลับ Tiktok ทำเงินล้านด้วย AI' (28 เม.ย. 2568)",
+      "แขกรับเชิญ/ผู้ร่วมรายการประจำ 'Thinking Connect' FM 96.5 คลื่นความคิด อสมท (12:30-13:00 น. พบตอนช่วง มี.ค. 2567 – ก.ย. 2568)",
+      "1 ใน 4 วิทยากรโครงการ อสมท 'กลยุทธ์ออนไลน์ ฝ่าวิกฤติ พิชิตเงินล้าน' (ข่าว 11 ก.ค. 2568)",
+      "วิทยากรสัมมนา KBank เรื่องเพิ่มยอดขาย 10 เท่าด้วย Short Video (รายงานว่า 10 ต.ค. 2566 — ยังไม่ยืนยันอิสระ)",
+      "วิทยากร workshop BOI ขอนแก่น (Short Video marketing) และ workshop ม.กรุงเทพ BUSEM"
+    ],
+    "personal_facebook_profile": {
+      "name": "หัวหน้าแบงค์",
+      "profile_id": "100083369377340",
+      "note": "โปรไฟล์ส่วนตัว (คนละอันกับเพจ) โพสต์เนื้อหาแนวเดียวกัน"
+    },
+    "writing_voice": "เขียนโพสต์สรรพนามบุรุษที่ 1 'ผม' เช่น 'หลายคนถามผมบ่อยมากว่า...'",
+    "do_not_confuse_with": "'โค้ชแบงค์ สุภกฤษ' เจ้าของเพจ 'รู้รอบตอบโจทย์ธุรกิจ' — เป็นคนละคน"
+  },
+  "company": {
+    "name": "บริษัท เทรนบิทซ์เวล จำกัด",
+    "name_english_uncertain": ["TrainBitsWell Co., Ltd.", "Trainbitwel Co., Ltd."],
+    "registry_note": "ไม่พบข้อมูลจดทะเบียน DBD/dataforthai ใน search index (เลขทะเบียน กรรมการ ทุน วันจดทะเบียน — ไม่ทราบ)",
+    "source": "ระบุใน footer เว็บ hbfullfunnel.com และหน้า about ของหลายแพลตฟอร์ม"
+  },
+  "products": [
+    {
+      "name": "ปั้นธุรกิจเงินล้านด้วย AI ฉบับจับมือทำ",
+      "type": "คอร์สออนไลน์เรือธง",
+      "price_thb": 8900,
+      "price_note": "฿8,900 ปรากฏใน snippet ของหน้าแรก hbfullfunnel.com 2 แหล่ง; การจับคู่ราคากับคอร์สนี้เป็นข้อสันนิษฐานที่มีน้ำหนักสูงสุด",
+      "url": "https://www.hbfullfunnel.com/courses",
+      "related": "มีคลาสสด (เห็นจากวิดีโอ YouTube 'เปิดคลาสสูตรลับปั้นธุรกิจเงินล้านด้วย AI' ~16 ส.ค. 2568)"
+    },
+    {
+      "name": "สัมมนาออนไลน์ฟรี (funnel ต้นทาง)",
+      "type": "free webinar",
+      "example": "'สูตรลับ Tiktok ทำเงินล้านด้วย AI' ร่วมกับ DBD สมาร์ทโชห่วย (28 เม.ย. 2568)"
+    }
+  ],
+  "website": {
+    "url": "https://hbfullfunnel.com",
+    "indexed_pages": ["/ (homepage)", "/l/products", "/courses"],
+    "note": "เว็บมีขนาดเล็กมาก — search index เจอเพียง 3 หน้า ไม่มี blog"
+  },
+  "channels": {
+    "facebook_page": "https://www.facebook.com/hbfullfunnel",
+    "line_oa": "@bankfullfunnel",
+    "tiktok": "https://www.tiktok.com/@bankfullfunnel",
+    "lemon8": "https://www.lemon8-app.com/@bankfullfunnel (ผู้ติดตาม ~8.5K→11.9K ตาม snapshot ต่างช่วง)",
+    "youtube": "https://www.youtube.com/channel/UCYYdtJwLRdpSmGWfm9ynadg",
+    "instagram": "มีบัญชี (พบโพสต์ DDgK9vrBXu1) — handle คาดว่า @bankfullfunnel ยังไม่ยืนยัน",
+    "not_found": ["podcast", "Twitter/X", "Blockdit"]
+  },
+  "signature_hashtags": ["#หัวหน้าแบงค์fullfunnel", "#สอนใช้AI", "#สอนใช้aiเพื่อธุรกิจ", "#สอนใช้aiเพื่อการทำงาน", "#สอนขายของออนไลน์", "#Aiคิดคอนเทนต์", "#claudecowork", "#สอนใช้claudecowork"],
+  "content_arc_timeline": {
+    "2023": "ยุคสอนยิงแอด Facebook/Reels (LINE Certified Coach, สัมมนา KBank)",
+    "2024": "เริ่มพิวอตสู่คอนเทนต์ 'สอนใช้ AI' — คลิปสั้นเทียบ AI แต่ละตัว (ChatGPT/Claude/Gemini/Perplexity/NotebookLM)",
+    "2025": "TikTok x AI ทำเงิน (สัมมนา DBD), แจก Prompt, เปิดคอร์ส 'ปั้นธุรกิจเงินล้านด้วย AI', Veo 3/วิดีโอ AI",
+    "2026": "Agentic AI — เน้น Claude Cowork ทำงานเอกสาร/แทนงานออฟฟิศ, เทียบ ChatGPT Work vs Claude Cowork, สอนเลือกโมเดล/จัดการลิมิต"
+  }
+}

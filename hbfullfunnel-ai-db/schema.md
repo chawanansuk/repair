@@ -16,17 +16,23 @@
 
 ```json
 {
-  "id": "post-001",
-  "date": "2026-07-15 หรือ null ถ้าไม่ทราบแน่ชัด",
+  "id": "fb-001 | l8-001 | tt-001 | yt-001 | ig-001 | fbp-001",
+  "platform": "facebook | facebook_personal_profile | lemon8 | tiktok | youtube | instagram",
+  "post_id": "ID ของโพสต์บนแพลตฟอร์มต้นทาง",
+  "url": "ลิงก์โพสต์",
+  "date": "วันที่ยืนยันได้ หรือ null",
+  "date_estimate": "คำอธิบายการประมาณช่วงเวลา",
   "date_confidence": "confirmed | estimated | unknown",
-  "platform": "facebook",
   "content": "ข้อความโพสต์ (verbatim เท่าที่ดัชนี search เก็บไว้)",
-  "content_completeness": "full | partial_snippet",
+  "content_completeness": "full | title_full | partial_snippet | url_only",
   "topics": ["AI", "funnel"],
-  "owner_comments": ["คอมเมนต์ของเจ้าของเพจใต้โพสต์ ถ้ามีข้อมูล"],
-  "source_urls": ["https://..."]
+  "owner_comments": ["คอมเมนต์ของเจ้าของเพจใต้โพสต์ — รอบเก็บนี้ว่างทุกรายการ (ดู README)"],
+  "source_urls": ["https://..."],
+  "notes": "หมายเหตุเพิ่มเติม (ถ้ามี)"
 }
 ```
+
+ใน `posts.json` แบ่ง records เป็น 5 กลุ่ม: `facebook_page_posts`, `lemon8_posts`, `tiktok_videos`, `youtube_videos`, `instagram_posts`
 
 ## ข้อจำกัดของข้อมูล (สำคัญ — อ่านก่อนใช้)
 

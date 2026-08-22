@@ -1,0 +1,51 @@
+{
+  "_readme": "หน่วยความรู้ (knowledge units) สกัดจากคอนเทนต์ทั้งหมดของ หัวหน้าแบงค์ FullFunnel ที่รวบรวมได้ — ใช้เป็น context ให้ AI เข้าใจ 'เพจนี้สอนอะไร พูดเรื่องอะไร ด้วยสไตล์ไหน'",
+  "core_positioning": {
+    "tagline": "ทำธุรกิจผ่านออนไลน์ไม่ใช่เรื่องยาก จับมือทำไปกับ หัวหน้าแบงค์ FullFunnel",
+    "signature_concept": "ฉบับจับมือทำ (hand-holding / ทำตามได้ทีละขั้น)",
+    "audience": "SME ไทย พ่อค้าแม่ค้าออนไลน์ เจ้าของธุรกิจ คนทำงานออฟฟิศที่อยากใช้ AI",
+    "methodology": "Full Funnel marketing — ทำโฆษณา/คอนเทนต์ครบทุกช่วง funnel บน Reels, Google Ads, Facebook, LINE, YouTube, TikTok, Instagram, Website พร้อมวัดผล"
+  },
+  "ai_tools_covered": {
+    "ChatGPT": ["Canvas", "ChatGPT 4.5", "สร้างภาพ/แก้ภาพเฉพาะจุด", "ภาษาไทยในภาพ", "Business Plan (และข้อจำกัด)", "Prompt สูตรสำเร็จ 7/10 สูตร", "แยกห้องแชท", "ตั้งค่าให้ตอบตรงไม่อวย", "ChatGPT Plus FAQ", "ChatGPT Work (2026)"],
+    "Claude": ["Claude ฟรี vs เสียเงิน", "Claude Cowork (ธีมหลักปี 2026): งานเอกสาร กรอกข้อมูล Dashboard รายงาน ทำงานแทนทั้งองค์กร", "Claude Code", "การเลือกโมเดลให้เหมาะกับงาน (3 คำถาม)", "จัดการ usage limit (8 เทคนิค)", "คู่มือมือใหม่ภาษาไทย", "คิดพาดหัวคอนเทนต์", "สรุปเนื้อหา", "ภาษาแบบผู้เชี่ยวชาญ", "สอนเลข"],
+    "Gemini": ["ฟรี vs เสียเงิน", "6 สูตรคำสั่ง", "Deep Think", "Deep Research", "Veo 3 (ต่อฉาก/พากย์ไทย)", "สร้างภาพ (Foto AI)", "เปลี่ยนชุดนางแบบ", "SWOT/Customer Insight", "วางแผนเที่ยว"],
+    "อื่นๆ": ["Perplexity (หาข้อมูล)", "NotebookLM (สรุปเอกสาร/วิจัย)", "CapCut (ซับ 2 ภาษา)", "Gamma (สไลด์)", "Runway/Kling/Luma (วิดีโอ)", "Sora (ภาพ/วิดีโอ)", "Meta AI (ภาพ/วิดีโอฟรี)", "Canva", "Notion"]
+  },
+  "business_use_cases_taught": [
+    "สร้างภาพสินค้า/นางแบบถือสินค้าใน 1 นาที (ประหยัดงบจ้างนางแบบ)",
+    "เขียนสคริปต์ขายของ / พาดหัวคอนเทนต์ / เขียนบทความ",
+    "ผลิตคลิปสั้น 30 คลิป/เดือน ด้วย AI เพื่อทำเงินบน TikTok",
+    "ปั้นเพจ Facebook ให้โต 10X ด้วย AI + Prompt",
+    "วิเคราะห์ยอดขาย + กลยุทธ์การตลาดแบบ MBA (แจก 28 Prompt)",
+    "ทำ Excel สูตร/Dashboard/รายงานอัตโนมัติ",
+    "งานเอกสารและ Operation ในองค์กรด้วย Claude Cowork",
+    "Customer Insight / SWOT ด้วย Gemini",
+    "คอนเทนต์ตามเทศกาล (สงกรานต์ วาเลนไทน์ ปีใหม่) ด้วยภาพ AI",
+    "ความปลอดภัยข้อมูล (2FA) และความเสี่ยงคอนเทนต์ AI โดนแพลตฟอร์มแบน"
+  ],
+  "content_formulas": {
+    "numbered_listicle": "สูตร/เทคนิค/ขั้นตอนเป็นตัวเลข เช่น '6 สูตร Gemini', '10 สูตรลับคุย ChatGPT', '8 เทคนิคไม่ติดลิมิต', '5 ขั้นตอน', '7 สูตรคำสั่ง'",
+    "giveaway": "โพสต์ 'แจก' — 'แจก 28 Prompt AI', 'แจกสูตร 8 เทคนิค', 'พร้อมแจก Prompt ใช้ได้เลย'",
+    "fomo_hook": "พาดหัวกระตุ้น เช่น '90% คนใช้ ChatGPT ไม่รู้จัก...', 'หลายคนไม่รู้...', 'หลายคนไม่เคยรู้...'",
+    "vs_comparison": "เทียบเครื่องมือ — ChatGPT vs Claude, ChatGPT vs Gemini, ฟรี vs เสียเงิน, ChatGPT Work vs Claude Cowork",
+    "news_explainer": "สรุปข่าว/อัปเดต AI แบบเจาะลึก (ChatGPT 4.5, Google AI Ultra)",
+    "pain_point_opener": "เปิดด้วย pain — 'ทำงานหน้าคอมวันละ 10 ชม.', 'เลิกกลัว AI แย่งงาน', 'ใช้ Claude แปบเดียวก็ติดลิมิต'",
+    "voice": "บุรุษที่ 1 'ผม' เป็นกันเอง ใส่อีโมจิ 🔥 ใช้เครื่องหมายคำพูดเน้นคำ"
+  },
+  "content_arc": [
+    {"period": "2023", "focus": "สอนยิงแอด Facebook/Reels/Inbox — ยุคก่อน AI"},
+    {"period": "2024", "focus": "พิวอตสู่ 'สอนใช้ AI' — คลิปสั้นเทียบเครื่องมือ AI รายตัว"},
+    {"period": "2025", "focus": "AI ทำเงินบน TikTok, แจก Prompt, เปิดคอร์สเรือธง, สัมมนา DBD, วิดีโอ AI (Veo/Sora)"},
+    {"period": "2026", "focus": "Agentic AI — Claude Cowork ทำงานเอกสาร/องค์กร, เลือกโมเดล, จัดการลิมิต, เทียบ ChatGPT Work vs Claude Cowork"}
+  ],
+  "notable_quotes_fragments": [
+    {"text": "AI คือเครื่องมือ แต่ความคิดสร้างสรรค์ ... (ถูกตัด)", "source": "Instagram DDgK9vrBXu1"},
+    {"text": "ผู้ประกอบการ เจ้าของธุรกิจ ถ้าไม่รู้จักใช้ AI ให้เป็น... (ถูกตัด)", "source": "โปรไฟล์ส่วนตัว"},
+    {"text": "หลายคนถามผมบ่อยมากว่า... (voice ประจำ)", "source": "โพสต์ ChatGPT vs Claude"}
+  ],
+  "unverified_claims": [
+    {"claim": "คอนเทนต์ Kano Model — 'ความพึงพอใจของลูกค้า = การซื้อซ้ำ' เป็นความเข้าใจผิด + 5 เทคนิค", "confidence": "ต่ำ — มาจาก AI summary ของ search engine อาจสับสนกับเพจ MarketThinkTH"},
+    {"claim": "บทความ thinkerfriend.com เรื่องคอร์สปั้น E-Book ด้วย AI+Canva ยอดขาย 1.2 ล้านบาท (ขาย PDF เล่มละ 990) เป็นของหัวหน้าแบงค์", "confidence": "ต่ำ-กลาง — snippet ไม่ได้ระบุชื่อ"}
+  ]
+}
